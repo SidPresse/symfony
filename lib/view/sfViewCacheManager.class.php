@@ -825,7 +825,30 @@ class sfViewCacheManager
       $content = $this->dispatcher->filter(new sfEvent($this, 'view.cache.filter_content', array('response' => $this->context->getResponse(), 'uri' => $uri, 'new' => false)), $content)->getReturnValue();
     }
 
-    return $content;
+    // return $content;
+
+    if (sfConfig::get('sf_environment') == 'cache'){
+
+      sfContext::getInstance()->getResponse()->addStylesheet('/dmCorePlugin/lib/symfony/cache.css');
+
+      // id unique pour le mouseover
+      $idDiv = md5($content);
+
+      // infos cache
+      $infosCache  = "<b>Cache info</b><br>";
+          
+      $infosCache .= "<b>Timeout: </b>".
+      date('d/m/Y H:i:s',$this->getTimeout($uri))."<br>";
+      $infosCache .= "<b>Last modified: </b>".
+      date('d/m/Y H:i:s',$this->getLastModified($uri))."<br>";
+          
+
+      return _tag('div.htmlcache',array('onmouseover' =>'$("div#'.$idDiv.'").show();', 'onmouseout' =>'$("div#'.$idDiv.'").hide();'),
+        _tag('div.htmlcacheinfo.alert.alert-success #'.$idDiv,$infosCache).$content);
+  
+    } else {
+      return $content;
+    }
   }
 
   /**
