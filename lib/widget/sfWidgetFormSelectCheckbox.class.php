@@ -109,8 +109,9 @@ class sfWidgetFormSelectCheckbox extends sfWidgetFormChoiceBase
       }
 
       $inputs[$id] = array(
-        'input' => $this->renderTag('input', array_merge($baseAttributes, $attributes)),
-        'label' => $this->renderContentTag('label', self::escapeOnce($option), array('for' => $id)),
+        // 'input' => $this->renderTag('input', array_merge($baseAttributes, $attributes)),
+        // 'label' => $this->renderContentTag('label', self::escapeOnce($option), array('for' => $id)),
+        'label' => $this->renderContentTag('label', $this->renderTag('input', array_merge($baseAttributes, $attributes)).self::escapeOnce($option), array('for' => $id,'class' => 'checkbox')),
       );
     }
 
@@ -122,9 +123,11 @@ class sfWidgetFormSelectCheckbox extends sfWidgetFormChoiceBase
     $rows = array();
     foreach ($inputs as $input)
     {
-      $rows[] = $this->renderContentTag('li', $input['input'].$this->getOption('label_separator').$input['label']);
+      // $rows[] = $this->renderContentTag('li', $input['input'].$this->getOption('label_separator').$input['label']);
+      $rows[] = $input['label'];
     }
 
-    return !$rows ? '' : $this->renderContentTag('ul', implode($this->getOption('separator'), $rows), array('class' => $this->getOption('class')));
+    // return !$rows ? '' : $this->renderContentTag('ul', implode($this->getOption('separator'), $rows), array('class' => $this->getOption('class')));
+    return !$rows ? '' : implode($this->getOption('separator'), $rows);
   }
 }
