@@ -90,7 +90,49 @@ class sfWidgetFormSelectCheckbox extends sfWidgetFormChoiceBase
     }
   }
 
-  protected function formatChoices($name, $value, $choices, $attributes)
+  // lioshi : buggy structure (need i,put in label for bootstrap)
+  // protected function formatChoices($name, $value, $choices, $attributes)
+  // {
+  //   $inputs = array();
+  //   foreach ($choices as $key => $option)
+  //   {
+  //     $baseAttributes = array(
+  //       'name'  => $name,
+  //       'type'  => 'checkbox',
+  //       'value' => self::escapeOnce($key),
+  //       'id'    => $id = $this->generateId($name, self::escapeOnce($key)),
+  //     );
+
+  //     //if ((is_array($value) && in_array(strval($key), $value)) || strval($key) == strval($value))
+  //     if ((is_array($value) && in_array(strval($key), $value)) || (is_string($value) && strval($key) == strval($value))) 
+  //     {
+  //       $baseAttributes['checked'] = 'checked';
+  //     }
+
+  //     $inputs[$id] = array(
+  //       // 'input' => $this->renderTag('input', array_merge($baseAttributes, $attributes)),
+  //       // 'label' => $this->renderContentTag('label', self::escapeOnce($option), array('for' => $id)),
+  //       'label' => $this->renderContentTag('label', $this->renderTag('input', array_merge($baseAttributes, $attributes)).self::escapeOnce($option), array('for' => $id,'class' => 'checkbox')),
+  //     );
+  //   }
+
+  //   return call_user_func($this->getOption('formatter'), $this, $inputs);
+  // }
+
+  // public function formatter($widget, $inputs)
+  // {
+  //   $rows = array();
+  //   foreach ($inputs as $input)
+  //   {
+  //     // $rows[] = $this->renderContentTag('li', $input['input'].$this->getOption('label_separator').$input['label']);
+  //     $rows[] = $input['label'];
+  //   }
+
+  //   // return !$rows ? '' : $this->renderContentTag('ul', implode($this->getOption('separator'), $rows), array('class' => $this->getOption('class')));
+  //   return !$rows ? '' : implode($this->getOption('separator'), $rows);
+  // }
+
+protected function formatChoices($name, $value, $choices, $attributes)
   {
     $inputs = array();
     foreach ($choices as $key => $option)
@@ -109,9 +151,8 @@ class sfWidgetFormSelectCheckbox extends sfWidgetFormChoiceBase
       }
 
       $inputs[$id] = array(
-        // 'input' => $this->renderTag('input', array_merge($baseAttributes, $attributes)),
-        // 'label' => $this->renderContentTag('label', self::escapeOnce($option), array('for' => $id)),
-        'label' => $this->renderContentTag('label', $this->renderTag('input', array_merge($baseAttributes, $attributes)).self::escapeOnce($option), array('for' => $id,'class' => 'checkbox')),
+        'input' => $this->renderTag('input', array_merge($baseAttributes, $attributes)),
+        'label' => $this->renderContentTag('label', self::escapeOnce($option), array('for' => $id)),
       );
     }
 
@@ -123,11 +164,10 @@ class sfWidgetFormSelectCheckbox extends sfWidgetFormChoiceBase
     $rows = array();
     foreach ($inputs as $input)
     {
-      // $rows[] = $this->renderContentTag('li', $input['input'].$this->getOption('label_separator').$input['label']);
-      $rows[] = $input['label'];
+      $rows[] = $this->renderContentTag('li', $input['input'].$this->getOption('label_separator').$input['label']);
     }
 
-    // return !$rows ? '' : $this->renderContentTag('ul', implode($this->getOption('separator'), $rows), array('class' => $this->getOption('class')));
-    return !$rows ? '' : implode($this->getOption('separator'), $rows);
+    return !$rows ? '' : $this->renderContentTag('ul', implode($this->getOption('separator'), $rows), array('class' => $this->getOption('class')));
   }
+
 }
