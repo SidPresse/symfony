@@ -90,7 +90,8 @@ class sfSessionStorage extends sfStorage
 
     if ($this->options['auto_start'] && !self::$sessionStarted)
     {
-      session_start();
+      // ajout lioshi : pour éviter les warnings lié au non accès en écriture du dossiers des fichiers de sessions
+      if (is_writable($path)) session_start();
       self::$sessionStarted = true;
     }
   }
