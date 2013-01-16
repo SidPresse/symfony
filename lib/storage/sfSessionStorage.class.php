@@ -90,7 +90,12 @@ class sfSessionStorage extends sfStorage
 
     if ($this->options['auto_start'] && !self::$sessionStarted)
     {
-      session_start();
+      // session_start();
+      // test if cli, and then no session start
+      $sapi_type = php_sapi_name();
+      if (substr($sapi_type, 0, 3) != 'cli') {
+        session_start();
+      }
       self::$sessionStarted = true;
     }
   }
