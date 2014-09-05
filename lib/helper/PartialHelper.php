@@ -131,7 +131,7 @@ function include_component($moduleName, $componentName, $vars = array())
  * @return string result of the component execution
  * @see    include_component
  */
-function get_component($moduleName, $componentName, $vars = array())
+function get_component($moduleName, $componentName, $vars = array(), $idWidget=null)
 {
   $context = sfContext::getInstance();
   $actionName = '_'.$componentName;
@@ -145,7 +145,7 @@ function get_component($moduleName, $componentName, $vars = array())
     return $retval;
   }
 
-  $allVars = _call_component($moduleName, $componentName, $vars);
+  $allVars = _call_component($moduleName, $componentName, $vars, $idWidget);
 
   if (null !== $allVars)
   {
@@ -338,7 +338,7 @@ function get_slot($name, $default = '')
   return isset($slots[$name]) ? $slots[$name] : $default;
 }
 
-function _call_component($moduleName, $componentName, $vars)
+function _call_component($moduleName, $componentName, $vars, $idWidget=null)
 {
   $context = sfContext::getInstance();
 
@@ -383,7 +383,7 @@ function _call_component($moduleName, $componentName, $vars)
     $timer = sfTimerManager::getTimer(sprintf('Component "%s/%s"', $moduleName, $componentName));
   }
 
-  $retval = $componentInstance->$componentToRun($context->getRequest());
+  $retval = $componentInstance->$componentToRun($context->getRequest(), $idWidget);
 
   if (sfConfig::get('sf_debug') && sfConfig::get('sf_logging_enabled'))
   {
