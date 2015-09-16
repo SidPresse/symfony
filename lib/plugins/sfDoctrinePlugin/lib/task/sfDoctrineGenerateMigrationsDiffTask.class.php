@@ -52,6 +52,8 @@ EOF;
     $databaseManager = new sfDatabaseManager($this->configuration);
     $config = $this->getCliConfig();
 
+    $this->logblock('(doctrine:generate-migrations-diff) ['.date('Y-m-d H:i:s').'] SITE: '.dmConfig::get('site_ndd').' ('.exec('pwd').')', 'INFO');
+
     $this->logSection('doctrine', 'generating migration diff');
 
     if (!is_dir($config['migrations_path']))

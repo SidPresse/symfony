@@ -70,6 +70,8 @@ EOF;
   {
     $databaseManager = new sfDatabaseManager($this->configuration);
 
+    $this->logblock('(doctrine:migrate) ['.date('Y-m-d H:i:s').'] SITE: '.dmConfig::get('site_ndd').' ('.exec('pwd').')', 'INFO');
+
     $config = $this->getCliConfig();
     $migration = new Doctrine_Migration($config['migrations_path']);
     $from = $migration->getCurrentVersion();

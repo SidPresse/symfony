@@ -72,6 +72,10 @@ EOF;
    */
   protected function execute($arguments = array(), $options = array())
   {
+    
+    $databaseManager = new sfDatabaseManager($this->configuration);
+    $this->logblock('(cc) ['.date('Y-m-d H:i:s').'] ('.exec('pwd').')', 'INFO');
+
     if (!sfConfig::get('sf_cache_dir') || !is_dir(sfConfig::get('sf_cache_dir')))
     {
       throw new sfException(sprintf('Cache directory "%s" does not exist.', sfConfig::get('sf_cache_dir')));
