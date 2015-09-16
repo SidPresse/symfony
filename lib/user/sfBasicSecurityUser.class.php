@@ -176,6 +176,9 @@ class sfBasicSecurityUser extends sfUser implements sfSecurityUser
    */
   public function isAuthenticated()
   {
+    // PRA $_SERVER[MODE_DEGRADE]
+    if(isset($_SERVER['MODE_DEGRADE']) && $_SERVER['MODE_DEGRADE'] == 1) return false;
+
     return $this->authenticated;
   }
 
