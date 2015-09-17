@@ -61,6 +61,9 @@ EOF;
     $config = $this->getCliConfig();
     $builderOptions = $this->configuration->getPluginConfiguration('sfDoctrinePlugin')->getModelBuilderOptions();
 
+    $databaseManager = new sfDatabaseManager($this->configuration);
+    $this->logblock('(doctrine:build-model) ['.date('Y-m-d H:i:s').'] SITE: '.dmConfig::get('site_ndd').' ('.exec('pwd').')', 'INFO');
+
     $stubFinder = sfFinder::type('file')->prune('base')->name('*'.$builderOptions['suffix']);
     $before = $stubFinder->in($config['models_path']);
 
