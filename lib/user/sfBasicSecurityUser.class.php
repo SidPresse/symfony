@@ -176,8 +176,26 @@ class sfBasicSecurityUser extends sfUser implements sfSecurityUser
    */
   public function isAuthenticated()
   {
+    $info='';
     // PRA $_SERVER[MODE_DEGRADE]
-    if(isset($_SERVER['MODE_DEGRADE']) && $_SERVER['MODE_DEGRADE'] == 1) return false;
+    $modeDegradeServer = false;
+    if(isset($_SERVER['MODE_DEGRADE']) && $_SERVER['MODE_DEGRADE'] == 1){
+      $modeDegradeServer = true;
+      $info.='[mode-degrade server $_SERVER[\'MODE_DEGRADE\']] ';
+    }
+    // boolean mode-degrade in app.yml
+    $modeDegradeAppYml = false;
+    if(sfConfig::get('app_mode-degrade')){
+      $modeDegradeAppYml = true;
+      $info.=' [mode-degrade in app.yml on diem core or on site]';
+    }
+
+    if($modeDegradeAppYml || $modeDegradeServer){
+      if(sfConfig::get('sf_environment') == 'dev'){
+        $this->setFlash('warning', 'Mode degrade: '.$info);
+      } 
+      return false;
+    }
 
     return $this->authenticated;
   }
